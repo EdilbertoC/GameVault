@@ -4,6 +4,7 @@ using GameVault.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameVault.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250224134504_MigracaoCorrecao")]
+    partial class MigracaoCorrecao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +38,7 @@ namespace GameVault.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Generos")
+                    b.PrimitiveCollection<string>("Generos")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -44,9 +47,8 @@ namespace GameVault.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 
-                    b.Property<string>("Plataforma")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Plataforma")
+                        .HasColumnType("int");
 
                     b.Property<int>("ReviewId")
                         .HasColumnType("int");
@@ -72,14 +74,14 @@ namespace GameVault.Migrations
                     b.Property<DateTime>("DataAvaliacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("HorasDeJogo")
-                        .HasColumnType("int");
-
                     b.Property<int>("JogoId")
                         .HasColumnType("int");
 
                     b.Property<int>("Nota")
                         .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TempoDeJogo")
+                        .HasColumnType("time");
 
                     b.HasKey("ReviewId");
 

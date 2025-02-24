@@ -14,7 +14,8 @@ namespace GameVault.Repositories
 
         public void AddJogo(Jogo jogo)
         {
-            throw new NotImplementedException();
+            _context.Jogos.Add(jogo);
+            _context.SaveChanges();
         }
 
         public IEnumerable<Jogo> GetAllJogos()

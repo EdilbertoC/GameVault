@@ -17,5 +17,21 @@ namespace GameVault.Controllers
             var jogos = _jogoRepository.GetAllJogos().ToList();
             return View(jogos);
         }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add(Jogo jogo)
+        {
+            if (ModelState.IsValid)
+            {
+                _jogoRepository.AddJogo(jogo);
+                return RedirectToAction("List");
+            }
+            return View(jogo);
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace GameVault.Models
         [Required(ErrorMessage = "Informe o tempo de jogo")]
         [Display(Name = "Tempo de Preparo")]
         [DisplayFormat(DataFormatString = @"{0:hh\:mm}", ApplyFormatInEditMode = true)]
-        public TimeSpan TempoDeJogo { get; set; }
+        public int HorasDeJogo { get; set; }
         public int JogoId { get; set; }
         public Jogo Jogo { get; set; }
     }
