@@ -9,8 +9,8 @@ namespace GameVault.Models
 
         [Required(ErrorMessage = "O comentário da review deve ser informado")]
         [Display(Name = "Comentário da Review")]
-        [MinLength(20, ErrorMessage = "O comentário deve ter no mínimo {1} caracteres")]
-        [MaxLength(200, ErrorMessage = "O comentário não pode exceder {1} caracteres")]
+        [MinLength(4, ErrorMessage = "O comentário deve ter no mínimo 4 caracteres")]
+        [MaxLength(200, ErrorMessage = "O comentário não pode exceder 200 caracteres")]
         public string Comentario { get; set; }
 
         [Required(ErrorMessage = "Informe a nota da review")]

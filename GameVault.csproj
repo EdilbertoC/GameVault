@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Views\Jogo\AddJogo.cshtml~RFb647e8f.TMP" />
     <None Remove="Views\Shared\_JogoPartial.cshtml~RFb490693.TMP" />
+    <None Remove="Views\Shared\_JogoPartial.cshtml~RFb8ec05e.TMP" />
   </ItemGroup>
 
   <ItemGroup>

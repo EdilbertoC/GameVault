@@ -21,10 +21,12 @@ namespace GameVault.Models
 
         [Required(ErrorMessage = "A plataforma do jogo deve ser informada")]
         [Display(Name = "Plataforma do Jogo")]
+        [StringLength(80, MinimumLength = 1, ErrorMessage = "A {0} deve ter no mínimo {2} e no máximo {1} caracteres")]
         public string Plataforma { get; set; }
 
         [Required(ErrorMessage = "Os gêneros do jogo devem ser informados")]
         [Display(Name = "Gêneros do Jogo")]
+        [StringLength(200, MinimumLength = 1, ErrorMessage = "O {0} deve ter no mínimo {2} e no máximo {1} caracteres")]
         public string Generos { get; set; }
         public int ReviewId { get; set; }
         public Review Review { get; set; }
