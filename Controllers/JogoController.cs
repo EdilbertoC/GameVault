@@ -33,5 +33,11 @@ namespace GameVault.Controllers
             }
             return View(jogo);
         }
+
+        public IActionResult Delete(int jogoId)
+        {
+            _jogoRepository.DeleteJogo(jogoId);
+            return RedirectToAction("List");
+        }
     }
 }

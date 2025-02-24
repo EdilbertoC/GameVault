@@ -18,6 +18,17 @@ namespace GameVault.Repositories
             _context.SaveChanges();
         }
 
+        public void DeleteJogo(int jogoId)
+        {
+            var jogo = _context.Jogos.SingleOrDefault(
+                j => j.JogoId == jogoId);
+            if (jogo != null)
+            {
+                _context.Jogos.Remove(jogo);
+            }
+            _context.SaveChanges();
+        }
+
         public IEnumerable<Jogo> GetAllJogos()
         {
             return _context.Jogos;

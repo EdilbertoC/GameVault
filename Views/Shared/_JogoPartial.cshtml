@@ -11,6 +11,6 @@
         }else{
             <a href="#" class="card-link">Avaliar</a>
         }
-        <a href="#" class="card-link text-danger">Excluir</a>
+        <a asp-controller="Jogo" asp-action="Delete" asp-route-jogoId="@Model.JogoId" class="card-link text-danger">Excluir</a>
     </div>
 </div>

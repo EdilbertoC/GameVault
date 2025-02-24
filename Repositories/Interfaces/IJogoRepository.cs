@@ -7,5 +7,6 @@ namespace GameVault.Repositories.Interfaces
         IEnumerable<Jogo> GetAllJogos();
         Jogo GetJogoById(int jogoId);
         void AddJogo(Jogo jogo);
+        void DeleteJogo(int jogoId);
     }
 }
