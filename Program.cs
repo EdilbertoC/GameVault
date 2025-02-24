@@ -1,5 +1,7 @@
 using GameVault.Context;
 using GameVault.Data;
+using GameVault.Repositories;
+using GameVault.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +18,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IJogoRepository, JogoRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 builder.Services.AddControllersWithViews();
 
