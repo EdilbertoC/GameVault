@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GameVault.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class MigrationApp : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,13 +19,19 @@ namespace GameVault.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Plataforma = table.Column<int>(type: "int", nullable: false),
-                    Generos = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReviewId = table.Column<int>(type: "int", nullable: false)
+                    Plataforma = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    Generos = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ReviewId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Jogos", x => x.JogoId);
+                    table.ForeignKey(
+                        name: "FK_Jogos_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -37,12 +43,18 @@ namespace GameVault.Migrations
                     Comentario = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Nota = table.Column<int>(type: "int", nullable: false),
                     DataAvaliacao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TempoDeJogo = table.Column<TimeSpan>(type: "time", nullable: false),
-                    JogoId = table.Column<int>(type: "int", nullable: false)
+                    HorasDeJogo = table.Column<int>(type: "int", nullable: false),
+                    JogoId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.ReviewId);
+                    table.ForeignKey(
+                        name: "FK_Reviews_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Reviews_Jogos_JogoId",
                         column: x => x.JogoId,
@@ -50,6 +62,16 @@ namespace GameVault.Migrations
                         principalColumn: "JogoId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Jogos_AppUserId",
+                table: "Jogos",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_AppUserId",
+                table: "Reviews",
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_JogoId",
@@ -60,7 +82,7 @@ namespace GameVault.Migrations
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        {  
             migrationBuilder.DropTable(
                 name: "Reviews");
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameVault.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250224135537_SegundaCorrecao")]
-    partial class SegundaCorrecao
+    [Migration("20250225135458_MigrationApp")]
+    partial class MigrationApp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,27 +33,35 @@ namespace GameVault.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("JogoId"));
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.PrimitiveCollection<string>("Generos")
+                    b.Property<string>("Generos")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 
-                    b.Property<int>("Plataforma")
-                        .HasColumnType("int");
+                    b.Property<string>("Plataforma")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<int>("ReviewId")
                         .HasColumnType("int");
 
                     b.HasKey("JogoId");
+
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Jogos");
                 });
@@ -65,6 +73,9 @@ namespace GameVault.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comentario")
                         .IsRequired()
@@ -84,6 +95,8 @@ namespace GameVault.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ReviewId");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("JogoId")
                         .IsUnique();
@@ -155,6 +168,11 @@ namespace GameVault.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -206,6 +224,10 @@ namespace GameVault.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -293,13 +315,35 @@ namespace GameVault.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("GameVault.Models.AppUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.HasDiscriminator().HasValue("AppUser");
+                });
+
+            modelBuilder.Entity("GameVault.Models.Jogo", b =>
+                {
+                    b.HasOne("GameVault.Models.AppUser", "AppUser")
+                        .WithMany("Jogos")
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("GameVault.Models.Review", b =>
                 {
+                    b.HasOne("GameVault.Models.AppUser", "AppUser")
+                        .WithMany("Reviews")
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("GameVault.Models.Jogo", "Jogo")
                         .WithOne("Review")
                         .HasForeignKey("GameVault.Models.Review", "JogoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
 
                     b.Navigation("Jogo");
                 });
@@ -358,6 +402,13 @@ namespace GameVault.Migrations
             modelBuilder.Entity("GameVault.Models.Jogo", b =>
                 {
                     b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("GameVault.Models.AppUser", b =>
+                {
+                    b.Navigation("Jogos");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

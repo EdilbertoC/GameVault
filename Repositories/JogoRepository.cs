@@ -1,6 +1,7 @@
 ﻿using GameVault.Context;
 using GameVault.Models;
 using GameVault.Repositories.Interfaces;
+using System.Security.Claims;
 
 namespace GameVault.Repositories
 {
@@ -29,9 +30,9 @@ namespace GameVault.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Jogo> GetAllJogos()
+        public IEnumerable<Jogo> GetAllJogosPerUser(string userId)
         {
-            return _context.Jogos;
+            return _context.Jogos.Where(j => j.AppUserId == userId);
         }
 
         public Jogo GetJogoById(int jogoId)

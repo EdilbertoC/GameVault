@@ -18,7 +18,6 @@ namespace GameVault.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configurar relacionamentos aqui (ex.: Jogo ↔ Review)
             modelBuilder.Entity<Jogo>()
                 .HasOne(j => j.Review)
                 .WithOne(r => r.Jogo)

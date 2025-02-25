@@ -29,5 +29,7 @@ namespace GameVault.Models
         public int HorasDeJogo { get; set; }
         public int JogoId { get; set; }
         public Jogo Jogo { get; set; }
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

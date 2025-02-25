@@ -30,5 +30,7 @@ namespace GameVault.Models
         public string Generos { get; set; }
         public int ReviewId { get; set; }
         public Review Review { get; set; }
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

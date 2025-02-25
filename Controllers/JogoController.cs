@@ -1,6 +1,9 @@
 ﻿using GameVault.Models;
 using GameVault.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using System.Security.Claims;
 
 namespace GameVault.Controllers
 {
@@ -14,7 +17,8 @@ namespace GameVault.Controllers
 
         public IActionResult List()
         {
-            var jogos = _jogoRepository.GetAllJogos().ToList();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var jogos = _jogoRepository.GetAllJogosPerUser(userId).ToList();
             return View(jogos);
         }
 
@@ -28,6 +32,9 @@ namespace GameVault.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                jogo.AppUserId = userId;
+
                 _jogoRepository.AddJogo(jogo);
                 return RedirectToAction("List");
             }
